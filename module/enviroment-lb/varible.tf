@@ -12,7 +12,7 @@ variable "lb_target-type" {
     default = "instance"
 }
 variable "vpc_id" {}
-variable "instance_id" {}
+variable "instance" {}
 variable "stg_lb_name" {
     default = "stg-LoadBalancer"
 }

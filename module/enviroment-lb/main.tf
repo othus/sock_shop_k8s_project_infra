@@ -34,10 +34,10 @@ resource "aws_lb_listener" "prod-lb_listener" {
 
 resource "aws_lb_target_group_attachment" "prod-lb_tg_grp" {
   target_group_arn = aws_lb_target_group.prod-target_grp.arn
-  target_id        = var.instance_id
+  target_id        = element(split(",", join(",", "${var.instance}")), count.index)
   port             = 30001
 }
-
+# var.instance_id
 resource "aws_lb" "stg-lb" {
   name               = var.stg_lb_name
   internal           = false
@@ -74,6 +74,6 @@ resource "aws_lb_listener" "stg-lb_listener" {
 
 resource "aws_lb_target_group_attachment" "stg-lb_tg_grp" {
   target_group_arn = aws_lb_target_group.stg-target_grp.arn
-  target_id        = var.instance_id
+  target_id        = element(split(",", join(",", "${var.instance}")), count.index)
   port             = 30001
 }
