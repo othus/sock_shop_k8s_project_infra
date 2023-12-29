@@ -1,0 +1,14 @@
+---
+ - hosts: HAPROXY1
+   become: true
+
+   tasks:
+
+     - name: Check if Application Repo exists
+       stat:
+         path: /home/ubuntu/US-Team-Sock-Shop-App-Repo
+       register: repo_exists
+
+     - name: Clone or Update Application Repo
+       git:
+         repo: 

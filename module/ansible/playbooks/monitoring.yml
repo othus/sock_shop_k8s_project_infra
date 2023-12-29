@@ -1,0 +1,34 @@
+---
+ - hosts: Worker
+   become: true
+
+   tasks:
+    - name: create the monitoring namespace using the 00-monitoring-ns.yaml file
+      shell: sudo su -c 'kubectl create -f 00-monitoring-ns.yaml' ubuntu
+      args:
+        chdir: microservices-demo/deploy/kubernetes/manifests-monitoring
+      ignore_errors: true
+
+    - name: apply all the prometheus manifests (01-10) in any order
+      shell: |
+        sudo su -c 'mkdir /home/ubuntu/prometheu' ubuntu
+        sudo su -c 'cp /home/ubuntu/microservices-demo/deploy/kubernetes/manifests-monitoring/*-prometheus-*.yaml /home/ubuntu/prometheu' ubuntu
+        sudo su -c 'kubectl apply -f /home/ubuntu/prometheu --recursive' ubuntu
+      args:
+        chdir: microservices-demo/deploy/kubernetes/manifests-monitoring
+      ignore_errors: true
+
+    - name: apply the grafana manifests from 20 to 22
+      shell: |
+        sudo su -c 'mkdir /home/ubuntu/grafana' ubuntu
+        sudo su -c 'cp /home/ubuntu/microservices-demo/deploy/kubernetes/manifests-monitoring/*-grafana-*.yaml /home/ubuntu/grafana' ubuntu
+        sudo su -c 'kubectl apply -f /home/ubuntu/grafana --recursive' ubuntu
+      args:
+        chdir: /home/ubuntu/microservices-demo/deploy/kubernetes/manifests-monitoring
+      ignore_errors: true
+
+    - name: import grafana dashboard
+      shell: sudo su -c 'kubectl apply -f 23-grafana-import-dash-batch.yaml' ubuntu
+      args:
+        chdir: microservices-demo/deploy/kubernetes/manifests-monitoring
+      ignore_errors: true
