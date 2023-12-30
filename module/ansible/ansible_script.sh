@@ -40,5 +40,6 @@ sudo su -c "ansible-playbook /home/ubuntu/playbooks/member_master.yml" ubuntu
 sudo su -c "ansible-playbook /home/ubuntu/playbooks/worker.yml" ubuntu
 sudo su -c "ansible-playbook /home/ubuntu/playbooks/ha-kubectl.yml" ubuntu
 sudo su -c "ansible-playbook /home/ubuntu/playbooks/monitoring.yml" ubuntu
+sudo su -c "ansible-playbook /home/ubuntu/playbooks/monitoring2.yml" ubuntu
 sudo su -c "ansible-playbook /home/ubuntu/playbooks/stage.yml" ubuntu
 sudo su -c "ansible-playbook /home/ubuntu/playbooks/prod.yml" ubuntu
