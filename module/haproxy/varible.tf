@@ -1,6 +1,7 @@
 variable "ubuntu" {}
 variable "instance_type" {}
 variable "subnets" {}
+variable "subnets2" {}
 variable "haproxy_sg" {}
 variable "key_name" {}
 variable "haproxymain" {}

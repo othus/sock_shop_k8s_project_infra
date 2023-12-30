@@ -6,6 +6,4 @@ variable "subnet-id" {}
 variable "instance_count" {
     default = 3
 }
-variable "master_instance_name" {
-  default = "Master-Node"
-}
+variable "worker_instance_name" {}

@@ -1,8 +1,6 @@
 variable "bastion_ansible_sg" {}
 variable "vpc_id" {}
-variable "project_name" {
-    default = "sockshop"
-}
+variable "k8s_SG" {}
 variable "port_ssh" {
     default = 22
 }

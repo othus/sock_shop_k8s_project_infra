@@ -15,7 +15,4 @@ variable "master1_ip" {}
 variable "worker1_ip" {}
 variable "worker2_ip" {}
 variable "worker3_ip" {}
-variable "iam_instance_profile" {}
-variable "bastion_host" {
-  
-}
+variable "bastion_host" {}

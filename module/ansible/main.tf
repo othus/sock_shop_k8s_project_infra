@@ -3,7 +3,6 @@ resource "aws_instance" "sockshop_ansible" {
   ami                    = var.ubuntu
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
-  iam_instance_profile   = var.iam_instance_profile
   vpc_security_group_ids = [var.ansible-SG]
   key_name               = var.key_name
   user_data              = templatefile("../module/ansible/ansible.sh", {

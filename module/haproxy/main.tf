@@ -19,7 +19,7 @@ resource "aws_instance" "haproxymain" {
 resource "aws_instance" "haproxybackup" {
   ami                         = var.ubuntu
   instance_type               = var.instance_type
-  subnet_id                   = var.subnets
+  subnet_id                   = var.subnets2
   vpc_security_group_ids      = [var.haproxy_sg]
   key_name                    = var.key_name
 

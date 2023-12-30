@@ -43,8 +43,8 @@ resource "aws_security_group" "bastion-ansible-sg" {
 }
 
 #Security group for Masters/worker node
-resource "aws_security_group" "sockshop_mas_work_sg" {
-  name ="${var.project_name}-mas_work_sg"
+resource "aws_security_group" "master_worker_sg" {
+  name = var.k8s_SG
   description = "Allow inbound Traffic"
   vpc_id = var.vpc_id
 
@@ -124,6 +124,6 @@ resource "aws_security_group" "sockshop_mas_work_sg" {
   }
 
   tags = {
-    Name = "${var.project_name}-k8s_SG"
+    Name = var.k8s_SG
   }
 }
