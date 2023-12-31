@@ -1,5 +1,5 @@
 locals {
-  name = "sock_shop"
+  name = "sockshop"
 }
 
 #  Creating All Network Resources
@@ -9,7 +9,7 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags = {
-    Name = "${locals.name}-vpc"
+    Name = "${local.name}-vpc"
   }
 }
 
@@ -19,7 +19,7 @@ resource "aws_subnet" "pubsub1" {
   cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1c"
   tags = {
-    Name = "${locals.name}-pubsub1"
+    Name = "${local.name}-pubsub1"
   }
 }
 
@@ -29,7 +29,7 @@ resource "aws_subnet" "pubsub2" {
   cidr_block        = "10.0.2.0/24"
   availability_zone = "us-east-1d"
   tags = {
-    Name = "${locals.name}-pubsub2"
+    Name = "${local.name}-pubsub2"
   }
 }
 
@@ -39,7 +39,7 @@ resource "aws_subnet" "pubsub3" {
   cidr_block        = "10.0.3.0/24"
   availability_zone = "us-east-1e"
   tags = {
-    Name = "${locals.name}-pubsub3"
+    Name = "${local.name}-pubsub3"
   }
 }
 
@@ -50,7 +50,7 @@ resource "aws_subnet" "prvtsub1" {
   availability_zone = "us-east-1c"
 
   tags = {
-    Name = "${locals.name}-prvtsub1"
+    Name = "${local.name}-prvtsub1"
   }
 }
 
@@ -61,7 +61,7 @@ resource "aws_subnet" "prvtsub2" {
   availability_zone = "us-east-1d"
 
   tags = {
-    Name = "${locals.name}-prvtsub2"
+    Name = "${local.name}-prvtsub2"
   }
 }
 
@@ -72,7 +72,7 @@ resource "aws_subnet" "prvtsub3" {
   availability_zone = "us-east-1e"
 
   tags = {
-    Name = "${locals.name}_prvtsub3"
+    Name = "${local.name}_prvtsub3"
   }
 }
 
@@ -80,7 +80,7 @@ resource "aws_subnet" "prvtsub3" {
 resource "aws_internet_gateway" "IGW" {
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = "${locals.name}_IGW"
+    Name = "${local.name}_IGW"
   }
 }
 
@@ -89,7 +89,7 @@ resource "aws_nat_gateway" "NAT" {
   allocation_id = aws_eip.nat_eip
   subnet_id     = aws_subnet.pubsub1.id
   tags = {
-    "Name" = "${locals.name}_NAT"
+    "Name" = "${local.name}_NAT"
   }
 }
 
@@ -98,7 +98,7 @@ resource "aws_eip" "nat_eip" {
   domain     = "vpc"
   depends_on = [aws_internet_gateway.IGW]
   tags = {
-    "Name" = "${locals.name}_eip"
+    "Name" = "${local.name}_eip"
   }
 }
 
@@ -107,11 +107,11 @@ resource "aws_eip" "nat_eip" {
 resource "aws_route_table" "PubRT" {
   vpc_id = aws_vpc.vpc.id
   route {
-    cidr_block = ["0.0.0.0/0"]
+    cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.IGW.id
   }
   tags = {
-    "Name" = "${locals.name}_PubRT"
+    "Name" = "${local.name}_PubRT"
   }
 }
 
@@ -119,11 +119,11 @@ resource "aws_route_table" "PubRT" {
 resource "aws_route_table" "PrvtRT" {
   vpc_id = aws_vpc.vpc.id
   route {
-    cidr_block = ["0.0.0.0/0"]
+    cidr_block = "0.0.0.0/0"
     gateway_id = aws_nat_gateway.NAT.id
   }
   tags = {
-    "Name" = "${locals.name}_PrvtRT"
+    "Name" = "${local.name}_PrvtRT"
   }
 }
 
@@ -167,7 +167,7 @@ resource "aws_route_table_association" "prvtsub3_RT_ass" {
 resource "aws_security_group" "jenkins_sg" {
   name        = "jenkins_sg"
   description = "Allow inbound traffic"
-  vpc_id      = aws_vpc.project_vpc.id
+  vpc_id      = aws_vpc.vpc.id
 
   ingress {
     description = "http proxy port"
@@ -197,7 +197,7 @@ resource "aws_security_group" "jenkins_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    "Name" = "${locals.name}jenkins_sg"
+    "Name" = "${local.name}jenkins_sg"
   }
 }
 
@@ -223,7 +223,7 @@ resource "aws_key_pair" "project_key" {
 # Creating EC2 Instance for jenkins Server
 
 resource "aws_instance" "jenkins_server" {
-  ami                         = "ami-000"   # redhat ami us east 1
+  ami                         = "ami-000" # redhat ami us east 1
   instance_type               = "t2.medium"
   vpc_security_group_ids      = [aws_security_group.jenkins_sg.id]
   key_name                    = aws_key_pair.project_key.id
@@ -232,24 +232,48 @@ resource "aws_instance" "jenkins_server" {
   associate_public_ip_address = true
   user_data                   = local.jenkins_user_data
   tags = {
-    "Name" = "${locals.name}_jenkins"
+    "Name" = "${local.name}_jenkins"
   }
 }
 
 # Creating IAM Policy
-resource "aws_iam_group_policy_attachment" "jenkins_policy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
-  group      = aws_iam_group.jenkins_group.name
+resource "aws_iam_role_policy_attachment" "jenkins_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role       = aws_iam_role.ec2_role.name
 }
 
-# Creating IAM Role
-resource "aws_iam_role" "ec2_role" {
-  name = "ec2_rule2"
-  assume_role_policy = "${file("${path.root}/ec2-assume.json")}"
-}
+# # Creating IAM Role
+# resource "aws_iam_role" "ec2_role" {
+#   name               = "ec2_rule"
+#   assume_role_policy = file(path.root/ec2_assume.json)
+# }
 
 # Creating IAM Instance Profile
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "ec2_profile"
   role = aws_iam_role.ec2_role.name
+}
+
+resource "aws_iam_role" "ec2_role" {
+  name = "ec2_role"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+
+  tags = {
+    tag-key = "ec2_role"
+  }
 }
