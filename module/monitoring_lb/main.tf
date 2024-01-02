@@ -39,6 +39,7 @@ resource "aws_lb_target_group_attachment" "prometheus-lb_tg_grp" {
   target_group_arn = aws_lb_target_group.prometheus-tg.arn
   target_id        = element(split(",", join(",", "${var.instance}")), count.index)
   port             = 31090
+  count = 3
 }
 
 resource "aws_lb" "grafana-lb" {
@@ -82,5 +83,6 @@ resource "aws_lb_target_group_attachment" "grafana-lb_tg_att" {
   target_group_arn = aws_lb_target_group.grafana-tg.arn
   target_id        = element(split(",", join(",", "${var.instance}")), count.index)
   port             = 31300
+  count = 3
 }
 

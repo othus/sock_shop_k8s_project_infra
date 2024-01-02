@@ -36,6 +36,7 @@ resource "aws_lb_target_group_attachment" "prod-lb_tg_grp" {
   target_group_arn = aws_lb_target_group.prod-target_grp.arn
   target_id        = element(split(",", join(",", "${var.instance}")), count.index)
   port             = 30001
+  count = 3
 }
 # var.instance_id
 resource "aws_lb" "stg-lb" {
@@ -76,4 +77,5 @@ resource "aws_lb_target_group_attachment" "stg-lb_tg_grp" {
   target_group_arn = aws_lb_target_group.stg-target_grp.arn
   target_id        = element(split(",", join(",", "${var.instance}")), count.index)
   port             = 30001
+  count = 3
 }

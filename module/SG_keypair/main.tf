@@ -6,7 +6,7 @@ resource "tls_private_key" "Keypair" {
 
 # Local Private key File of the TLS key Resource
 resource "local_file" "Keypair" {
-  content         = tls_private_key.keypair.private_key_pem
+  content         = tls_private_key.Keypair.private_key_pem
   file_permission = "600"
   filename        = "keypair.pem"
 }
@@ -14,7 +14,7 @@ resource "local_file" "Keypair" {
 # AWS Keypair Resource
 resource "aws_key_pair" "project_key" {
   key_name   = "keypair"
-  public_key = tls_private_key.keypair.public_key_openssh
+  public_key = tls_private_key.Keypair.public_key_pem
 }
 
 # Bastion Security Group Resource

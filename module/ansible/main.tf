@@ -5,7 +5,7 @@ resource "aws_instance" "sockshop_ansible" {
   subnet_id              = var.subnet_id
   vpc_security_group_ids = [var.ansible-SG]
   key_name               = var.key_name
-  user_data              = templatefile("../module/ansible/ansible.sh", {
+  user_data              = templatefile("./module/ansible/ansible_script.sh", {
     private_key          = var.private_key,
     haproxymain_ip       = var.haproxymain_ip,
     haproxybackup_ip     = var.haproxybackup_ip,

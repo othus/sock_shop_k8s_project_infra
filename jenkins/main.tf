@@ -84,23 +84,23 @@ resource "aws_internet_gateway" "IGW" {
   }
 }
 
-# Creating NAT Gateway association with Public subnet 1 resource
-resource "aws_nat_gateway" "NAT" {
-  allocation_id = aws_eip.nat_eip
-  subnet_id     = aws_subnet.pubsub1.id
-  tags = {
-    "Name" = "${local.name}_NAT"
-  }
-}
+# # Creating NAT Gateway association with Public subnet 1 resource
+# resource "aws_nat_gateway" "NAT" {
+#   allocation_id = "aws_eip.nat_eip"
+#   subnet_id     = "aws_subnet.pubsub1.id"
+#   tags = {
+#     "Name" = "${local.name}_NAT"
+#   }
+# }
 
-# Creating Elastic IP resource for NAT Gateway
-resource "aws_eip" "nat_eip" {
-  domain     = "vpc"
-  depends_on = [aws_internet_gateway.IGW]
-  tags = {
-    "Name" = "${local.name}_eip"
-  }
-}
+# # Creating Elastic IP resource for NAT Gateway
+# resource "aws_eip" "nat_eip" {
+#   domain     = "vpc"
+#   depends_on = [aws_internet_gateway.IGW]
+#   tags = {
+#     "Name" = "${local.name}_eip"
+#   }
+# }
 
 
 # Creating Public Route Table resource
@@ -115,17 +115,17 @@ resource "aws_route_table" "PubRT" {
   }
 }
 
-# Creating Private Route Table resource
-resource "aws_route_table" "PrvtRT" {
-  vpc_id = aws_vpc.vpc.id
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.NAT.id
-  }
-  tags = {
-    "Name" = "${local.name}_PrvtRT"
-  }
-}
+# # Creating Private Route Table resource
+# resource "aws_route_table" "PrvtRT" {
+#   vpc_id = aws_vpc.vpc.id
+#   route {
+#     cidr_block = "0.0.0.0/0"
+#     gateway_id = aws_nat_gateway.NAT.id
+#   }
+#   tags = {
+#     "Name" = "${local.name}_PrvtRT"
+#   }
+# }
 
 # Creating Public Subnet 1 Route Table association resource
 resource "aws_route_table_association" "pubsub1_RT_ass" {
@@ -145,23 +145,23 @@ resource "aws_route_table_association" "pubsub3_RT_ass" {
   subnet_id      = aws_subnet.pubsub3.id
 }
 
-# Creating Private Subnet 1 Route Table association resource
-resource "aws_route_table_association" "prvtsub1_RT_ass" {
-  route_table_id = aws_route_table.PrvtRT.id
-  subnet_id      = aws_subnet.prvtsub1.id
-}
+# # Creating Private Subnet 1 Route Table association resource
+# resource "aws_route_table_association" "prvtsub1_RT_ass" {
+#   route_table_id = aws_route_table.PrvtRT.id
+#   subnet_id      = aws_subnet.prvtsub1.id
+# }
 
-# Creating Private Subnet 2 Route Table association resource
-resource "aws_route_table_association" "prvtsub2_ass" {
-  route_table_id = aws_route_table.PrvtRT.id
-  subnet_id      = aws_subnet.pubsub2.id
-}
+# # Creating Private Subnet 2 Route Table association resource
+# resource "aws_route_table_association" "prvtsub2_ass" {
+#   route_table_id = aws_route_table.PrvtRT.id
+#   subnet_id      = aws_subnet.pubsub2.id
+# }
 
-# Creating Private Subnet 1 Route Table association resource
-resource "aws_route_table_association" "prvtsub3_RT_ass" {
-  route_table_id = aws_route_table.PrvtRT.id
-  subnet_id      = aws_subnet.prvtsub3.id
-}
+# # Creating Private Subnet 1 Route Table association resource
+# resource "aws_route_table_association" "prvtsub3_RT_ass" {
+#   route_table_id = aws_route_table.PrvtRT.id
+#   subnet_id      = aws_subnet.prvtsub3.id
+# }
 
 # Jenkins Security Group Resource
 resource "aws_security_group" "jenkins_sg" {
@@ -223,8 +223,8 @@ resource "aws_key_pair" "project_key" {
 # Creating EC2 Instance for jenkins Server
 
 resource "aws_instance" "jenkins_server" {
-  ami                         = "ami-000" # redhat ami us east 1
-  instance_type               = "t2.medium"
+  ami                         = "ami-023c11a32b0207432" # redhat ami us east 1
+  instance_type               = "t2.micro"
   vpc_security_group_ids      = [aws_security_group.jenkins_sg.id]
   key_name                    = aws_key_pair.project_key.id
   subnet_id                   = aws_subnet.pubsub1.id

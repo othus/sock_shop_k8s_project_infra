@@ -34,7 +34,6 @@ variable "port_etcd" {
 variable "port_etcd_client" {
     default = 2379
 }
-variable "vpc_id" {}
 variable "all-cidr" {
     default = "0.0.0.0/0"
 }
