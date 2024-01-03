@@ -82,14 +82,3 @@ resource "aws_acm_certificate_validation" "sockshop-cert-validation" {
   validation_record_fqdns = [for record in aws_route53_record.sockshop-validation-record : record.fqdn]
 }
 
-# resource "aws_lb_listener" "lb-listener" {
-#   load_balancer_arn = var.lb_arn
-#   port              = 443
-#   protocol          = "HTTPS"
-#   ssl_policy        = "ELBSecurityPolicy-2016-08"
-#   certificate_arn   = aws_acm_certificate_validation.sockshop-cert-validation.certificate_arn
-#   default_action {
-#     type             = "forward"
-#     target_group_arn = var.lb_target_arn
-#   }
-# }

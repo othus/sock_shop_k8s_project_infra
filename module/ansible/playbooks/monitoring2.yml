@@ -26,4 +26,4 @@
       shell: sudo su -c "helm repo update" ubuntu
 
     - name: Install and Expose Prometheus and Grafana service
-      shell: sudo su -c "helminstall prometheus-stack prometheus-community/kube-prometheus-stack --namespace "{{ namespce }}" --set prometheus.service.nodePort="{{ prometheus_port }}" --set prometheus.service.type=NodePort --set grafana.service.nodePort="{{ grafana_port }}" --set grafana.service.type=NodePort" ubuntu
+      shell: sudo su -c "helminstall prometheus-stack prometheus-community/kube-prometheus-stack  --namespace "{{ namespce }}" --set prometheus.service.nodePort="{{ prometheus_port }}" --set prometheus.service.type=NodePort --set grafana.service.nodePort="{{ grafana_port }}" --set grafana.service.type=NodePort" ubuntu

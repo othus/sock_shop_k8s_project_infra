@@ -86,7 +86,7 @@ resource "aws_internet_gateway" "IGW" {
 
 # Creating NAT Gateway association with Public subnet 1 resource
 resource "aws_nat_gateway" "NAT" {
-  allocation_id = "aws_eip.nat_eip"
+  allocation_id = "aws_eip.nat_eip.id"
   subnet_id     = "aws_subnet.pubsub1.id"
   tags = {
     "Name" = "${local.name}_NAT"

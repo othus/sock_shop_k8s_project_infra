@@ -128,22 +128,22 @@ module "monitoring_lb" {
   prometheus_tg      = "${local.name}-prometheus-tg"
 }
 
-module "route53_ssl" {
-  source              = "./module/route53_ssl"
-  stage_zone_id       = module.enviroment_lb.stg-lb-zone_id
-  stage_dns_name      = module.enviroment_lb.stg-lb-dns
-  domain_name         = "raro.com.ng"
-  domain_name1        = "stage.raro.com.ng"
-  domain_name2        = ".prod.raro.com.ng"
-  domain_name3        = "grafana.raro.com.ng"
-  domain_name4        = "prometheus.raro.com.ng"
-  domain_name5        = "*.raro.com.ng"
-  prod_dns_name       = module.enviroment_lb.lb-dns
-  prod_zone_id        = module.enviroment_lb.lb-zone_id
-  lb_arn              = module.enviroment_lb.lb-arn
-  lb_target_arn       = module.enviroment_lb.stg-lb-arn
-  prometheus_dns_name = module.monitoring_lb.prometheus_lb_dns
-  prometheus_zone_id  = module.monitoring_lb.prometheus_zone_id
-  grafana_dns_name    = module.monitoring_lb.grafana-lb-dns
-  grafana_zone_id     = module.monitoring_lb.grafana_zone_id
-}
+# module "route53_ssl" {
+#   source              = "./module/route53_ssl"
+#   stage_zone_id       = module.enviroment_lb.stg-lb-zone_id
+#   stage_dns_name      = module.enviroment_lb.stg-lb-dns
+#   domain_name         = "raro.com.ng"
+#   domain_name1        = "stage.raro.com.ng"
+#   domain_name2        = ".prod.raro.com.ng"
+#   domain_name3        = "grafana.raro.com.ng"
+#   domain_name4        = "prometheus.raro.com.ng"
+#   domain_name5        = "*.raro.com.ng"
+#   prod_dns_name       = module.enviroment_lb.lb-dns
+#   prod_zone_id        = module.enviroment_lb.lb-zone_id
+#   lb_arn              = module.enviroment_lb.lb-arn
+#   lb_target_arn       = module.enviroment_lb.stg-lb-arn
+#   prometheus_dns_name = module.monitoring_lb.prometheus_lb_dns
+#   prometheus_zone_id  = module.monitoring_lb.prometheus_zone_id
+#   grafana_dns_name    = module.monitoring_lb.grafana-lb-dns
+#   grafana_zone_id     = module.monitoring_lb.grafana_zone_id
+# }
