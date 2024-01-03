@@ -4,42 +4,42 @@ pipeline {
         terraform 'terraform'
     }
 
-    stage {
+    stages {
         stage('Initialise Terraform') {
             steps {
                 sh 'terraform init'
             }
         }
     }
-    stage {
+    stages {
         stage('Terraform format') {
             steps {
                 sh 'terraform fmt'
             }
         }
     }
-    stage {
+    stages {
         stage('Terraform Validate') {
             steps {
                 sh 'terraform validate'
             }
         }
     }
-    stage {
+    stages {
         stage('Terraform Plan') {
             steps {
                 sh 'terraform plan'
             }
         }
     }
-    stage ('Prompt for apply or destroy approval'){
+    stages ('Prompt for apply or destroy approval'){
       steps {
         timeout(activity: true, time: 5) {
           input message: 'Needs approval to apply or destroy', submitter: 'admin'
         }
       }
     }
-    stage {
+    stages {
         stage('Terraform Apply or Destroy action') {
             steps {
                 sh 'terraform ${action} -auto-approve'
