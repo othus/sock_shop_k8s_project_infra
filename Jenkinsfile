@@ -10,7 +10,6 @@ pipeline {
                 sh 'terraform init'
             }
         }
-    }
     
         stage('Terraform format') {
             steps {
@@ -43,5 +42,6 @@ pipeline {
                 sh 'terraform ${action} -auto-approve'
             }
         }
+    }
 
 }
