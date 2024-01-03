@@ -4,7 +4,7 @@ output "haproxy_ip" {
 }
 
 output "worker_node" {
-  value = module.Worker-Node.Worker-Node_prvt
+  value = module.worker_node.Worker-Node_private_ip
 }
 output "Ansible_IP" {
   value = module.ansible.ansible_IP
@@ -13,10 +13,10 @@ output "bastion_IP" {
   value = module.bastion.bastion_public_ip
 }
 output "HAProxy_IP" {
-  value = module.HAproxy-Prod.prod_HAProxy_IP
+  value = module.haproxy.haproxymain_ip
 }
 output "HAProxy_BackupIP" {
-  value = module.HAProxy_backup.prod_HAProxy_backup_IP
+  value = module.haproxy.haproxybackup_ip
 }
 # output "HAproxy_Stage_IP" {
 #   value = module.HAproxy-stage.stage_HAproxy_IP

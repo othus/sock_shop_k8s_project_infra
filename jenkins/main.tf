@@ -225,7 +225,7 @@ resource "aws_key_pair" "project_key" {
 
 resource "aws_instance" "jenkins_server" {
   ami                         = "ami-023c11a32b0207432" # redhat ami us east 1
-  instance_type               = "t2.micro"
+  instance_type               = "t2.small"
   vpc_security_group_ids      = [aws_security_group.jenkins_sg.id]
   key_name                    = aws_key_pair.project_key.id
   subnet_id                   = aws_subnet.pubsub1.id
