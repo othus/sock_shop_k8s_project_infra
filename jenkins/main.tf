@@ -86,8 +86,9 @@ resource "aws_internet_gateway" "IGW" {
 
 # Creating NAT Gateway association with Public subnet 1 resource
 resource "aws_nat_gateway" "NAT" {
-  allocation_id = "aws_eip.nat_eip.id"
-  subnet_id     = "aws_subnet.pubsub1.id"
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id     = aws_subnet.pubsub1.id
+  depends_on = [ aws_internet_gateway.IGW ]
   tags = {
     "Name" = "${local.name}_NAT"
   }
@@ -152,9 +153,9 @@ resource "aws_route_table_association" "prvtsub1_RT_ass" {
 }
 
 # Creating Private Subnet 2 Route Table association resource
-resource "aws_route_table_association" "prvtsub2_ass" {
+resource "aws_route_table_association" "prvtsub2_RT_ass" {
   route_table_id = aws_route_table.PrvtRT.id
-  subnet_id      = aws_subnet.pubsub2.id
+  subnet_id      = aws_subnet.prvtsub2.id
 }
 
 # Creating Private Subnet 1 Route Table association resource
